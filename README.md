@@ -1,7 +1,7 @@
 # Current
 
 [![Continuous Integration](https://img.shields.io/travis/bloodhawk/current/master.svg)](https://travis-ci.org/bloodhawk/current)
-[![Code Coverage](https://img.shields.io/coveralls/bloodhawk/current/master.svg)](https://coveralls.io/github/bloodhawk/current)
+[![Coverage Status](https://coveralls.io/repos/github/bloodhawk/current/badge.svg)](https://coveralls.io/github/bloodhawk/current)
 [![Documentation](http://inch-ci.org/github/bloodhawk/current.svg)](http://inch-ci.org/github/bloodhawk/current)
 [![Package](https://img.shields.io/hexpm/v/current.svg)](https://hex.pm/packages/current)
 
