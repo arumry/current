@@ -9,6 +9,7 @@ _deps/
 _build/
 _rel/
 .elixir_ls
+doc/
 
 #
 # Secrets

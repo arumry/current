@@ -8,6 +8,22 @@
 Current provides more powerful streaming mechanisms than those offered by [Ecto](https://github.com/elixir-ecto/ecto). 
 Forked from [Bourne](https://github.com/mtwilliams/bourne) which is inactive.
 
+## Summary
+
+### Keyset:
+
+* Iterates by monotonic key say BIGSERIAL identifier.
+* Either ascending or descending order.
+* Essentially performs repeated SELECT * FROM table WHERE id > N LIMIT 1000 statements, feeding N from the last seen key.
+* Does not require a transaction.
+
+### Cursor:
+
+* Iterates using a cursor - leveraging server functionality for streaming large row sets.
+* You can read more [here](https://www.postgresql.org/docs/9.2/plpgsql-cursors.html).
+* Essentially a SELECT * FROM table that is streamed in sets of rows.
+* Requires a transaction.
+
 ## Example
 
 ```elixir
@@ -20,7 +36,8 @@ import Ecto.Query
 q = from(actor in Actor, where: actor.born <= 1980)
 
 # You can stream through an `Enumerable`:
-My.Repo.stream(q) |> Stream.each(&IO.inspect) |> Stream.run
+My.Repo.stream(q, method: :keyset) |> Stream.each(&IO.inspect) |> Stream.run
+My.Repo.stream(q, method: :cursor) |> Stream.each(&IO.inspect) |> Stream.run
 ```
 
 ## Installation

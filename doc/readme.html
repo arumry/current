@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.21.3">
+    <meta name="project" content="Current for Ecto v2.0.0">
+    <title>Current — Current for Ecto v2.0.0</title>
+    <link rel="stylesheet" href="dist/elixir-0ab8a6a80ebaaa287431.css" />
+      <link rel="canonical" href="https://hexdocs.pm/current/readme.html" />
+    <script src="dist/sidebar_items-3f38ff4d8a.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-a225d03098e64fef431a.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button">
+      <span class="icon-search" aria-hidden="true"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button">
+      <span class="icon-cross" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Search" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/bloodhawk/current" class="sidebar-projectName">
+Current for Ecto      </a>
+      <h2 class="sidebar-projectVersion">
+        v2.0.0
+      </h2>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>Current</h1>
+<p><a href="https://travis-ci.org/bloodhawk/current"><img src="https://img.shields.io/travis/bloodhawk/current/master.svg" alt="Continuous Integration" /></a>
+<a href="https://coveralls.io/github/bloodhawk/current"><img src="https://coveralls.io/repos/github/bloodhawk/current/badge.svg" alt="Coverage Status" /></a>
+<a href="http://inch-ci.org/github/bloodhawk/current"><img src="http://inch-ci.org/github/bloodhawk/current.svg" alt="Documentation" /></a>
+<a href="https://hex.pm/packages/current"><img src="https://img.shields.io/hexpm/v/current.svg" alt="Package" /></a></p>
+<p>Current provides more powerful streaming mechanisms than those offered by <a href="https://github.com/elixir-ecto/ecto">Ecto</a>. 
+Forked from <a href="https://github.com/mtwilliams/bourne">Bourne</a> which is inactive.</p>
+<h2 id="example" class="section-heading">
+  <a href="#example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+
+<pre><code class="nohighlight makeup elixir"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">My.Repo</span><span class="w"> </span><span class="k" data-group-id="1285793163-1">do</span><span class="w">
+  </span><span class="kn">use</span><span class="w"> </span><span class="nc">Ecto.Repo</span><span class="p">,</span><span class="w"> </span><span class="ss">otp_app</span><span class="p">:</span><span class="w"> </span><span class="ss">:mine</span><span class="w">
+  </span><span class="kn">use</span><span class="w"> </span><span class="nc">Current</span><span class="w">
+</span><span class="k" data-group-id="1285793163-1">end</span><span class="w">
+
+</span><span class="kn">import</span><span class="w"> </span><span class="nc">Ecto.Query</span><span class="w">
+</span><span class="n">q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from</span><span class="p" data-group-id="1285793163-2">(</span><span class="n">actor</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nc">Actor</span><span class="p">,</span><span class="w"> </span><span class="ss">where</span><span class="p">:</span><span class="w"> </span><span class="n">actor</span><span class="o">.</span><span class="n">born</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1980</span><span class="p" data-group-id="1285793163-2">)</span><span class="w">
+
+</span><span class="c1"># You can stream through an [`Enumerable`](https://hexdocs.pm/elixir/Enumerable.html):</span><span class="w">
+</span><span class="nc">My.Repo</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="1285793163-3">(</span><span class="n">q</span><span class="p" data-group-id="1285793163-3">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">each</span><span class="p" data-group-id="1285793163-4">(</span><span class="o">&amp;</span><span class="nc">IO</span><span class="o">.</span><span class="n">inspect</span><span class="p" data-group-id="1285793163-4">)</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">run</span></code></pre>
+<h2 id="installation" class="section-heading">
+  <a href="#installation" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Installation
+</h2>
+
+<ol>
+<li>Add <code class="inline">current</code> to your list of dependencies in <code class="inline">mix.exs</code>:
+</li>
+</ol>
+<pre><code class="nohighlight makeup elixir"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="0857052871-1">do</span><span class="w">
+    </span><span class="p" data-group-id="0857052871-2">[</span><span class="p" data-group-id="0857052871-3">{</span><span class="ss">:current</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 2.0&quot;</span><span class="p" data-group-id="0857052871-3">}</span><span class="p" data-group-id="0857052871-2">]</span><span class="w">
+  </span><span class="k" data-group-id="0857052871-1">end</span></code></pre>
+<ol start="2">
+<li>Fetch and compile your new dependency:
+</li>
+</ol>
+<pre><code class="nohighlight makeup elixir"><span class="w">  </span><span class="n">mix</span><span class="w"> </span><span class="k" data-group-id="7161104549-1">do</span><span class="w"> </span><span class="n">deps</span><span class="o">.</span><span class="n">get</span><span class="w"> </span><span class="n">current</span><span class="p">,</span><span class="w"> </span><span class="n">deps</span><span class="o">.</span><span class="n">compile</span></code></pre>
+<ol start="3">
+<li><p>Drink your :tea:</p>
+</li>
+<li><p>That&#39;s it!</p>
+</li>
+</ol>
+<h2 id="usage" class="section-heading">
+  <a href="#usage" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Usage
+</h2>
+
+<p>Refer to the <a href="https://hexdocs.pm/current/Current.html">documentation</a>.</p>
+<h3 id="asdf" class="section-heading">
+  <a href="#asdf" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  ASDF
+</h3>
+
+<p>Using Bash:</p>
+<pre><code class="shell">git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.6
+echo -e &#39;\n. $HOME/.asdf/asdf.sh&#39; &gt;&gt; ~/.bash_profile
+echo -e &#39;\n. $HOME/.asdf/completions/asdf.bash&#39; &gt;&gt; ~/.bash_profile
+source ~/.bash_profile
+asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
+asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+# cd path/to/current
+asdf install
+asdf reshim
+mix local.hex --if-missing
+mix local.rebar --force
+mix do deps.get, compile</code></pre>
+<h2 id="testing" class="section-heading">
+  <a href="#testing" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Testing
+</h2>
+
+<p>The test suite relies on a locally running postgres insatnce. You can use docker to create one quickly:</p>
+<pre><code class="nohighlight makeup elixir"><span class="n">docker</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">postgres</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="mi">5432</span><span class="p">:</span><span class="mi">5432</span><span class="w"> </span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="nc">POSTGRES_PASSWORD</span><span class="o">=</span><span class="n">postgres</span><span class="w"> </span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">postgres</span></code></pre>
+<h2 id="license" class="section-heading">
+  <a href="#license" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  License
+</h2>
+
+<p>Current is free and unencumbered software released into the public domain, with fallback provisions for jurisdictions that don&#39;t recognize the public domain.</p>
+<p>For details, see <code class="inline">LICENSE.md</code>.</p>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.21.3),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>
