@@ -2,9 +2,9 @@ sudo: false
 dist: trusty
 language: elixir
 elixir:
-  - 1.4.1
+  - 1.9.0
 otp_release:
-  - 18.2.1
+  - 22.0.7
 services:
   - postgresql
 addons:
@@ -15,7 +15,7 @@ cache:
     - _build
 env:
   global:
-    - DATABASE_URL=ecto://postgres:@localhost/bourne
+    - DATABASE_URL=ecto://postgres:@localhost/current
 script:
   - mix test
 after_script:
@@ -25,6 +25,6 @@ after_script:
 notifications:
   email:
     recipients:
-      - m.t.williams@live.com
+      - arumery@cars.com
     on_success: change
     on_failure: change

@@ -1,13 +1,13 @@
-defmodule Bourne.Mixfile do
+defmodule Current.Mixfile do
   use Mix.Project
 
   @version File.read!("VERSION") |> String.trim_trailing()
-  @source "https://github.com/mtwilliams/bourne"
+  @source "https://github.com/bloodhawk/current"
 
   def project do
     [
-      app: :bourne,
-      elixir: "~> 1.4",
+      app: :current,
+      elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
       config_path: "config/config.exs",
       build_path: "_build",
@@ -16,7 +16,7 @@ defmodule Bourne.Mixfile do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
-      name: "Bourne for Ecto",
+      name: "Current for Ecto",
       description: "Better streaming for Ecto.",
       version: @version,
       docs: docs(),
@@ -38,14 +38,13 @@ defmodule Bourne.Mixfile do
       {:ecto_sql, "~> 3.0"},
 
       # Testing
-      {:postgrex, ">= 0.0.0"},
-      {:gen_stage, "~> 0.13", only: [:test]},
-      {:excoveralls, ">= 0.0.0", only: [:test]},
-      {:inch_ex, ">= 0.0.0", only: [:dev, :docs]},
+      {:postgrex, "~> 0.15.0"},
+      {:excoveralls, "~> 0.10.6", only: :test},
+      {:inch_ex, "~> 2.0.0", only: [:dev, :docs]},
 
       # Documentation
-      {:ex_doc, "~> 0.15", only: [:dev, :docs]},
-      {:earmark, "~> 1.1", only: [:dev, :docs]}
+      {:ex_doc, "~> 0.19", only: [:dev, :docs]},
+      {:earmark, "~> 1.3", only: [:dev, :docs]}
     ]
   end
 
@@ -53,7 +52,7 @@ defmodule Bourne.Mixfile do
 
   defp package do
     [
-      maintainers: ["Michael Williams"],
+      maintainers: ["Aaron Rumery"],
       licenses: ["Public Domain"],
       links: %{"Github" => @source},
       files: ~w(lib mix.exs README.md LICENSE CHANGELOG.md VERSION)
@@ -62,8 +61,8 @@ defmodule Bourne.Mixfile do
 
   defp docs do
     [
-      main: "Bourne",
-      canonical: "http://hexdocs.pm/bourne",
+      main: "Current",
+      canonical: "http://hexdocs.pm/current",
       source_ref: "v#{@version}",
       source_url: @source,
       extras: ~W{README.md CHANGELOG.md}

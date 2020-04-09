@@ -1,7 +1,7 @@
-defmodule Bourne.Test.Repo do
+defmodule Current.Test.Repo do
   use Ecto.Repo,
-    otp_app: :bourne,
+    otp_app: :current,
     adapter: Ecto.Adapters.Postgres
 
-  use Bourne
+  use Current
 end

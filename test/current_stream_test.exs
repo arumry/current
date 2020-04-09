@@ -1,5 +1,5 @@
-defmodule Bourne.StreamTest do
-  use Bourne.Test.Case, async: true
+defmodule Current.StreamTest do
+  use Current.Test.Case, async: true
 
   describe "cursor" do
     @tag db: true
@@ -83,7 +83,7 @@ defmodule Bourne.StreamTest do
 
   defp stream(queryable, options) do
     stream = Repo.stream(queryable, options)
-    {:ok, rows} = Repo.transaction fn -> Enum.to_list(stream) end
+    {:ok, rows} = Repo.transaction(fn -> Enum.to_list(stream) end)
     rows
   end
 end

@@ -1,4 +1,4 @@
-defmodule Bourne.Stream do
+defmodule Current.Stream do
   @moduledoc false
 
   defstruct [:repo, :queryable, :options, :state]
@@ -17,16 +17,17 @@ defmodule Bourne.Stream do
   end
 end
 
-defmodule Bourne.Stream.Chunk do
+defmodule Current.Stream.Chunk do
   @moduledoc false
   defstruct [:stream, :rows]
 end
 
-defimpl Enumerable, for: Bourne.Stream do
+defimpl Enumerable, for: Current.Stream do
   require Ecto.Query
 
   def count(_), do: {:error, __MODULE__}
   def member?(_, _), do: {:error, __MODULE__}
+  def slice(_), do: {:error, __MODULE__}
 
   def reduce(_, {:halt, acc}, _fun) do
     {:halted, acc}
@@ -40,10 +41,11 @@ defimpl Enumerable, for: Bourne.Stream do
     key = stream.options[:key]
     chunk = stream.options[:chunk]
 
-    rows = stream.queryable
-           |> offset(stream)
-           |> Ecto.Query.limit(^chunk)
-           |> stream.repo.all()
+    rows =
+      stream.queryable
+      |> offset(stream)
+      |> Ecto.Query.limit(^chunk)
+      |> stream.repo.all()
 
     case List.last(rows) do
       nil ->
@@ -51,14 +53,14 @@ defimpl Enumerable, for: Bourne.Stream do
 
       %{^key => last_seen_key} ->
         state = Map.put(stream.state, :last_seen_key, last_seen_key)
-        stream = %Bourne.Stream{stream | state: state}
-        chunk = %Bourne.Stream.Chunk{stream: stream, rows: rows}
+        stream = %Current.Stream{stream | state: state}
+        chunk = %Current.Stream.Chunk{stream: stream, rows: rows}
 
         Enumerable.reduce(chunk, {:cont, acc}, fun)
     end
   end
 
-  defp offset(query, %Bourne.Stream{state: state}) when (state == %{}) do
+  defp offset(query, %Current.Stream{state: state}) when state == %{} do
     query
   end
 
@@ -70,15 +72,17 @@ defimpl Enumerable, for: Bourne.Stream do
     case direction do
       :asc ->
         query |> Ecto.Query.where([r], field(r, ^key) > ^last_seen_key)
+
       :desc ->
         query |> Ecto.Query.where([r], field(r, ^key) < ^last_seen_key)
     end
   end
 end
 
-defimpl Enumerable, for: Bourne.Stream.Chunk do
+defimpl Enumerable, for: Current.Stream.Chunk do
   def count(_), do: {:error, __MODULE__}
   def member?(_, _), do: {:error, __MODULE__}
+  def slice(_), do: {:error, __MODULE__}
 
   def reduce(_, {:halt, acc}, _fun) do
     {:halted, acc}
@@ -88,11 +92,11 @@ defimpl Enumerable, for: Bourne.Stream.Chunk do
     {:suspended, acc, &reduce(chunk, &1, fun)}
   end
 
-  def reduce(%Bourne.Stream.Chunk{rows: []} = chunk, {:cont, acc}, fun) do
+  def reduce(%Current.Stream.Chunk{rows: []} = chunk, {:cont, acc}, fun) do
     Enumerable.reduce(chunk.stream, {:cont, acc}, fun)
   end
 
-  def reduce(%Bourne.Stream.Chunk{rows: [row | remaining]} = chunk, {:cont, acc}, fun) do
-    reduce(%Bourne.Stream.Chunk{chunk | rows: remaining}, fun.(row, acc), fun)
+  def reduce(%Current.Stream.Chunk{rows: [row | remaining]} = chunk, {:cont, acc}, fun) do
+    reduce(%Current.Stream.Chunk{chunk | rows: remaining}, fun.(row, acc), fun)
   end
 end

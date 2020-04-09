@@ -1,25 +1,25 @@
-defmodule Bourne.Test.Case do
+defmodule Current.Test.Case do
   use ExUnit.CaseTemplate
 
   using do
     quote do
-      alias Bourne.Test.{Repo, Actor, Movie, Credit}
+      alias Current.Test.{Repo, Actor, Movie, Credit}
 
       import Ecto.Query
 
-      import Bourne.Test.Case.Helpers
+      import Current.Test.Case.Helpers
     end
   end
 
   setup context do
     if context[:db] do
-      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Bourne.Test.Repo)
+      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Current.Test.Repo)
 
-      # Move into `Bourne.StreamerTest` cases?
-      Ecto.Adapters.SQL.Sandbox.mode(Bourne.Test.Repo, {:shared, self()})
+      # Move into `Current.StreamerTest` cases?
+      Ecto.Adapters.SQL.Sandbox.mode(Current.Test.Repo, {:shared, self()})
 
       # Toggle with different tag?
-      Bourne.Test.Data.insert!
+      Current.Test.Data.insert!()
     end
   end
 
@@ -30,11 +30,12 @@ defmodule Bourne.Test.Case do
     defp ordered?(rows, comparer, options) do
       key = Keyword.get(options, :key, :id)
 
-      {_, ordered} = Enum.reduce rows, {nil, true}, fn
-        (%{^key => current}, {nil, true}) -> {current, true}
-        (%{^key => current}, {_, false}) -> {current, false}
-        (%{^key => current}, {prev, true}) -> {current, comparer.(current, prev)}
-      end
+      {_, ordered} =
+        Enum.reduce(rows, {nil, true}, fn
+          %{^key => current}, {nil, true} -> {current, true}
+          %{^key => current}, {_, false} -> {current, false}
+          %{^key => current}, {prev, true} -> {current, comparer.(current, prev)}
+        end)
 
       ordered
     end

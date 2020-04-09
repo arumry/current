@@ -1,5 +1,5 @@
-defmodule Bourne.Test.Data do
-  alias Bourne.Test.{Repo, Actor, Movie, Credit}
+defmodule Current.Test.Data do
+  alias Current.Test.{Repo, Actor, Movie}
 
   def insert! do
     cleese = Repo.insert!(%Actor{name: "John Cleese"})
@@ -15,7 +15,7 @@ defmodule Bourne.Test.Data do
 
     for actor <- [cleese, chapman, idle, gilliam, jones, palin] do
       for movie <- [the_holy_grail, life_of_brian, meaning_of_life] do
-        Ecto.build_assoc(actor, :credits, movie_id: movie.id) |> Repo.insert!
+        Ecto.build_assoc(actor, :credits, movie_id: movie.id) |> Repo.insert!()
       end
     end
 

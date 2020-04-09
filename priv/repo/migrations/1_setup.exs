@@ -1,4 +1,4 @@
-defmodule Bourne.Test.Repo.Migrations.Setup do
+defmodule Current.Test.Repo.Migrations.Setup do
   use Ecto.Migration
 
   def change do
