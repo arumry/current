@@ -35,10 +35,10 @@ defmodule Current.Mixfile do
 
   defp deps do
     [
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.7"},
 
       # Testing
-      {:postgrex, "~> 0.15.0"},
+      {:postgrex, "~> 0.16"},
       {:excoveralls, "~> 0.10.6", only: :test},
       {:inch_ex, "~> 2.0.0", only: [:dev, :docs]},
 
